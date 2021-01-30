@@ -1,0 +1,13 @@
+build
+.pytest*
+pilco.egg-info
+__pycache__
+*.swp
+octave-workspace
+*.egg
+pilco/__pycache__/
+examples/.ipynb_checkpoints/
+examples/__pycache__/
+examples/cartpole_swingup_envs/cartpole_swingup_envs/__pycache__/
+examples/cartpole_swingup_envs/cartpole_swingup_envs.egg-info
+
