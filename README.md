@@ -6,9 +6,9 @@ We use a `TensorFlow v2` implementation of the [PILCO](https://ieeexplore.ieee.o
 
 Since OpenAI gym does not contain the cart-pole swing-up example, we use a third-party implementation obtained and modified from [here](https://github.com/jfpettit/cartpole-swingup-envs).
 
-Everything has been tested in a conda environment with `python==3.7`.
-
 ## Usage
+
+Everything has been tested in a conda environment with `python==3.7`.
 
 First install the PILCO TensorFlow v2 implementation by:
 ```
