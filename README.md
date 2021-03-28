@@ -1,7 +1,6 @@
 # Probabilistic Inference for Learning Control (PILCO)
 
-We use a `TensorFlow v2` implementation of the [PILCO](https://ieeexplore.ieee.org/abstract/document/6654139/) Algorithm obtained and modified from [here](https://github.com/nrontsis/PILCO) (commit 6a962c8e4172f9e7f29ed6e373c4be2dd4b69cb7).
-
+We use a `TensorFlow v2` implementation of the [PILCO](https://ieeexplore.ieee.org/abstract/document/6654139/) Algorithm obtained and modified from [here](https://github.com/nrontsis/PILCO).
 ## The Cart-Pole Swing-Up Example
 
 Since OpenAI gym does not contain the cart-pole swing-up example, we use a third-party implementation obtained and modified from [here](https://github.com/jfpettit/cartpole-swingup-envs).
@@ -12,8 +11,9 @@ Everything has been tested in a conda environment with `python==3.7`.
 
 First install the PILCO TensorFlow v2 implementation by:
 ```
-git clone https://github.com/Wenlin-Chen/PILCO && cd PILCO
-python setup.py develop
+git clone https://github.com/Wenlin-Chen/PILCO
+cd PILCO
+pip install -e .
 pip install -r requirements.txt
 ```
 Then install the cart-pole swing-up environment by:

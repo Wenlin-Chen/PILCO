@@ -21,6 +21,7 @@ class SMGPR(MGPR):
             #TODO: Maybe fix noise for better conditioning
             self.models.append(gpflow.models.GPRFITC((data[0], data[1][:, i:i+1]), kern, inducing_variable=Z))
 
+    @tf.function
     def calculate_factorizations(self):
         batched_eye = tf.eye(self.num_induced_points, batch_shape=[self.num_outputs], dtype=float_type)
         # TODO: Change 1e-6 to the respective constant of GPflow
@@ -44,6 +45,7 @@ class SMGPR(MGPR):
         iK = tf.linalg.cholesky_solve(L, batched_eye) - iB
         return iK, beta
 
+    @tf.function
     def centralized_input(self, m):
         return self.Z - m
 

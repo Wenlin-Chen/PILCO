@@ -10,6 +10,7 @@ f64 = gpflow.utilities.to_default_float
 from .models import MGPR
 float_type = gpflow.config.default_float()
 
+@tf.function
 def squash_sin(m, s, max_action=None):
     '''
     Squashing function, passing the controls mean and variance
@@ -43,6 +44,7 @@ class LinearController(gpflow.Module):
         self.b = Parameter(np.random.rand(1, control_dim))
         self.max_action = max_action
 
+    @tf.function
     def compute_action(self, m, s, squash=True):
         '''
         Simple affine action:  M <- W(m-t) - b
@@ -105,6 +107,7 @@ class RbfController(MGPR):
             else:
                 self.models.append(FakeGPR((data[0], data[1][:,i:i+1]), kernel, self.models[-1].X))
 
+    @tf.function
     def compute_action(self, m, s, squash=True):
         '''
         RBF Controller. See Deisenroth's Thesis Section

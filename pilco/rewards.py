@@ -16,6 +16,7 @@ class ExponentialReward(Module):
         else:
             self.t = Parameter(np.zeros((1, state_dim)), trainable=False)
 
+    @tf.function
     def compute_reward(self, m, s):
         '''
         Reward function, calculating mean and variance of rewards, given
@@ -55,6 +56,7 @@ class LinearReward(Module):
         self.state_dim = state_dim
         self.W = Parameter(np.reshape(W, (state_dim, 1)), trainable=False)
 
+    @tf.function
     def compute_reward(self, m, s):
         muR = tf.reshape(m, (1, self.state_dim)) @ self.W
         sR = tf.transpose(self.W) @ s @ self.W
@@ -70,6 +72,7 @@ class CombinedRewards(Module):
         else:
             self.coefs = Parameter(np.ones(len(rewards)), dtype=float_type, trainable=False)
 
+    @tf.function
     def compute_reward(self, m, s):
         total_output_mean = 0
         total_output_covariance = 0

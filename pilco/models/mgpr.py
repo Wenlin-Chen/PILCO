@@ -57,20 +57,20 @@ class MGPR(gpflow.Module):
 
         for model, optimizer in zip(self.models, self.optimizers):
             best_params = {
-                "lengthscales" : model.kernel.lengthscales.value(),
-                "k_variance" : model.kernel.variance.value(),
-                "l_variance" : model.likelihood.variance.value()}
+                "k_lengthscales" : model.kernel.lengthscales,
+                "k_variance" : model.kernel.variance,
+                "l_variance" : model.likelihood.variance}
             best_loss = model.training_loss()
             for restart in range(restarts):
                 randomize(model)
                 optimizer.minimize(model.training_loss, model.trainable_variables)
                 loss = model.training_loss()
                 if loss < best_loss:
-                    best_params["k_lengthscales"] = model.kernel.lengthscales.value()
-                    best_params["k_variance"] = model.kernel.variance.value()
-                    best_params["l_variance"] = model.likelihood.variance.value()
+                    best_params["k_lengthscales"] = model.kernel.lengthscales
+                    best_params["k_variance"] = model.kernel.variance
+                    best_params["l_variance"] = model.likelihood.variance
                     best_loss = model.training_loss()
-            model.kernel.lengthscales.assign(best_params["lengthscales"])
+            model.kernel.lengthscales.assign(best_params["k_lengthscales"])
             model.kernel.variance.assign(best_params["k_variance"])
             model.likelihood.variance.assign(best_params["l_variance"])
 
@@ -78,6 +78,7 @@ class MGPR(gpflow.Module):
         iK, beta = self.calculate_factorizations()
         return self.predict_given_factorizations(m, s, iK, beta)
 
+    @tf.function
     def calculate_factorizations(self):
         K = self.K(self.X)
         batched_eye = tf.eye(tf.shape(self.X)[0], batch_shape=[self.num_outputs], dtype=float_type)
@@ -88,6 +89,7 @@ class MGPR(gpflow.Module):
         beta = tf.linalg.cholesky_solve(L, Y_, name="chol2_calc_fact")[:, :, 0]
         return iK, beta
 
+    @tf.function
     def predict_given_factorizations(self, m, s, iK, beta):
         """
         Approximate GP regression at noisy inputs via moment matching
@@ -148,6 +150,7 @@ class MGPR(gpflow.Module):
 
         return tf.transpose(M), S, tf.transpose(V)
 
+    @tf.function
     def centralized_input(self, m):
         return self.X - m
 
@@ -170,19 +173,19 @@ class MGPR(gpflow.Module):
     @property
     def lengthscales(self):
         return tf.stack(
-            [model.kernel.lengthscales.value() for model in self.models]
+            [model.kernel.lengthscales for model in self.models]
         )
 
     @property
     def variance(self):
         return tf.stack(
-            [model.kernel.variance.value() for model in self.models]
+            [model.kernel.variance for model in self.models]
         )
 
     @property
     def noise(self):
         return tf.stack(
-            [model.likelihood.variance.value() for model in self.models]
+            [model.likelihood.variance for model in self.models]
         )
 
     @property
