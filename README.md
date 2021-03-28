@@ -7,7 +7,7 @@ Since OpenAI gym does not contain the cart-pole swing-up example, we use a third
 
 ## Usage
 
-Everything has been tested in a conda environment with `python==3.7`. It is recommended to create a new virtual environment for this:
+Everything has been tested in a conda environment with `python==3.7`. It is recommended to create a new conda environment for this:
 
 First install the PILCO TensorFlow v2 implementation by:
 ```
